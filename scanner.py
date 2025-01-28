@@ -16,7 +16,7 @@ def ping_that_ip(ip):
     try:
         # Runs the command while also keep track of the times
         start = time.time()
-        output = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=5)
+        output = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=2)
         end = time.time()
 
         # If the command was ran succesfully (exit 0) then it will continue on by giving out the time
@@ -28,13 +28,9 @@ def ping_that_ip(ip):
         else:
             return "DOWN", None, output.stderr
     
-    # If it was a timeout error the follow will proceed (timeout=5 gives the code 5 seconds to respond before it will terminate)
+    # If it was a timeout error the follow will proceed (timeout=2 gives the code 2 seconds to respond before it will terminate)
     except subprocess.TimeoutExpired:
-        return "DOWN", None, "REQUEST TIMED OUT."
-    
-    # If anything gets by it'll give this instead
-    except Exception as e:
-        return "DOWN", None, str(e)
+        return "ERROR", None, "REQUEST TIMED OUT."
 
 # LETS THROW IT ALL TOGETHER
 def main():
@@ -61,11 +57,11 @@ def main():
 
         # If the host is up it will return this
         if status == "UP":
-            print(f"{ip}: UP [Response Time: {response_time} ms]")
+            print(f"{ip}: {status} [Response Time: {response_time} ms]")
         
         # If the host is down it will return this instead
         else:
-            print(f"{ip}: DOWN [Error: {error}]")
+            print(f"{ip}: {status} [Error: {error}]")
 
     sys.exit(0)
 
