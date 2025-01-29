@@ -16,7 +16,7 @@ def ping_that_ip(ip):
     try:
         # Runs the command while also keep track of the times
         start = time.time()
-        output = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=2)
+        output = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=5)
         end = time.time()
 
         # If the command was ran succesfully (exit 0) then it will continue on by giving out the time
