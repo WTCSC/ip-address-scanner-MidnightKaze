@@ -10,13 +10,13 @@ import time
 
 def ping_that_ip(ip):
     # B/C Windows and Linux use differnt flags for a number ping, we'll account for both
-    flag = "-n" if platform.system().lower == "windows" else "-c"
+    flag = "/n" if platform.system().lower() == "windows" else "-c"
     command = ['ping', flag, '1', str(ip)]
     
     try:
         # Runs the command while also keep track of the times
         start = time.time()
-        output = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=5)
+        output = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=3)
         end = time.time()
 
         # If the command was ran succesfully (exit 0) then it will continue on by giving out the time
@@ -28,7 +28,7 @@ def ping_that_ip(ip):
         else:
             return "DOWN", None, output.stderr
     
-    # If it was a timeout error the follow will proceed (timeout=2 gives the code 2 seconds to respond before it will terminate)
+    # If it was a timeout error the follow will proceed (timeout=3 gives the command 3 seconds to execute before it will terminate)
     except subprocess.TimeoutExpired:
         return "ERROR", None, "REQUEST TIMED OUT."
 
